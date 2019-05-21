@@ -48,28 +48,39 @@ class CRM:
     note = input()
 
     # call the appropriate method from the contact class (remember we imported it?):
-    Contact.create(first_name, last_name, email, note)
-  
+    # Contact.create(first_name, last_name, email, note)
+    Contact.create(
+    first_name= first_name,
+    last_name= last_name,
+    email= email,
+    note= note
+    )
+
   def modify_existing_contact(self):
 
     print("Eneter the ID of the contact that you want to modify")  
     id = int(input())
-    contact = Contact.find(id)
+    contact = Contact.get(id)
+
     print("what do you want to modify?")
     attribute = input()
+
     print("what is the value that you want to change to?")
     value = input()
-    print(contact.update(attribute, value))
+
+    setattr(contact, attribute, value)
+    contact.save()
+    return contact
 
   def delete_contact(self):
      print("Enter the ID of the contact that you want to delete")
      contact_id = int(input())
-     contact = Contact.find(contact_id)
-     contact.delete()
+     contact = Contact.get(contact_id)
+     contact.delete_instance()
 
   def display_all_contacts(self):
-     
-      print(Contact.all())
+    for contact in Contact.select():
+      print(contact.first_name)
 
   def search_by_attribute(self):
       print("Input the attribute that you want to search by")
